@@ -5,18 +5,21 @@ class CsvWriter
     private $path;
     private $file;
 
-    public function __construct($path){
-        if(!is_dir(dirname($path)))
+    public function setCsvPath($path)
+    {
+        if (!is_dir(dirname($path)))
             throw new Exception("Directory doesn't exists");
         $this->path = $path;
-        $this->file = fopen($path,'w');
+        $this->file = fopen($path, 'w');
     }
 
-    public function writeLine($line){
-        fwrite($this->file,($line . PHP_EOL));
+    public function writeLine($line)
+    {
+        fwrite($this->file, ($line . PHP_EOL));
     }
 
-    public function save(){
+    public function save()
+    {
         fclose($this->file);
     }
 }

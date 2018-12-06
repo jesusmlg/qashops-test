@@ -8,13 +8,13 @@ include('CsvWriter.php');
  * @version  0.1
  * @access   public
  */
-class CsvMerge
+class CsvMerge extends CsvWriter
 {
   private $header = [];
   private $body = [];
   private $csv;
   private $file = "";
-   
+
   /**
    * combina dos ficheros csv en uno único
    *
@@ -26,25 +26,25 @@ class CsvMerge
    */
   public function merge($file1Path, $file2Path, $resultPath)
   {
-    if(!file_exists($file1Path) || !file_exists($file2Path))
+    if (!file_exists($file1Path) || !file_exists($file2Path))
       throw new Exception("Bad path in file1 or file2");
 
-    $this->csv = new CsvWriter($resultPath);
-    
+    $this->setCsvPath($resultPath);
+
     $file1InArray = array_map('str_getcsv', file($file1Path));
     $file2InArray = array_map('str_getcsv', file($file2Path));
 
     $this->createHeader(array($file1InArray, $file2InArray));
     $this->createBody(array($file1InArray, $file2InArray));
 
-    
+
     echo $this->writeMergedCsv();
 
-    $this->csv->save();
+    $this->save();
 
   }
 
-  
+
   /**
    * busca las cabeceras comunes en los dos ficheros y elimina duplicados
    *
@@ -76,25 +76,21 @@ class CsvMerge
   private function writeMergedCsv()
   {
     $this->writeLineInCSV($this->header);
-    $this->writeLineInCSV($this->body);    
+    $this->writeLineInCSV($this->body);
   }
 
   /**
    * escribe las lineas en el fichero csv
    *
    * @param  array  $csvInArray array con los datos mapeados del fichero csv
-   * @return void    escribe las lineas en el fichero
+   * @return void    escribe las lineas en el fichero csv
    * @access private
    */
   private function writeLineInCSV(array $csvInArray)
   {
-    $line = "";
-
     foreach ($csvInArray as $value) {
-      $line .= implode(",", $value) . PHP_EOL;
+      $this->writeLine(implode(",", $value));
     }
-
-    $this->csv->writeLine($line);
   }
 
   /**
@@ -118,7 +114,7 @@ class CsvMerge
    */
   private function createBody($csvFilesArr)
   {
-    array_map(array($this,'createBodyFile'), $csvFilesArr);
+    array_map(array($this, 'createBodyFile'), $csvFilesArr);
   }
 
   /**
@@ -172,6 +168,9 @@ class CsvMerge
     return $csvLine;
   }
 }
+$file1 = getcwd() . '/assets/csv1.csv';
+$file2 = getcwd() . '/assets/csv2.csv';
+$fileMerged = getcwd() . '/assets/result.csv';
 
-$xml = new CsvMerge();
-$xml->merge(getcwd() . '/assets/csv1.csv', getcwd() . '/assets/csv2.csv',getcwd() . '/assets/result.csv');
+$xml = new CsvMerge($fileMerged);
+$xml->merge($file1, $file2, $fileMerged);
