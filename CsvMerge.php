@@ -10,11 +10,16 @@ include('CsvWriter.php');
  */
 class CsvMerge extends CsvWriter
 {
+  /**
+   * cabeceras únicas del fichero csv
+   * @var array
+  */
   private $header = [];
+  /**
+   * líneas del fichero csv que vamos a escribir sin la cabecera
+   * @var array
+  */
   private $body = [];
-  private $csv;
-  private $file = "";
-
   /**
    * combina dos ficheros csv en uno único
    *
@@ -89,7 +94,7 @@ class CsvMerge extends CsvWriter
   private function writeLineInCSV(array $csvInArray)
   {
     foreach ($csvInArray as $value) {
-      $this->writeLine(implode(",", $value));
+      $this->writeCsvLine(implode(",", $value));
     }
   }
 
@@ -170,7 +175,7 @@ class CsvMerge extends CsvWriter
 }
 $file1 = getcwd() . '/assets/csv1.csv';
 $file2 = getcwd() . '/assets/csv2.csv';
-$fileMerged = getcwd() . '/assets/result.csv';
+$fileCsv= getcwd() . '/assets/result.csv';
 
-$xml = new CsvMerge($fileMerged);
-$xml->merge($file1, $file2, $fileMerged);
+$xml = new CsvMerge();
+$xml->merge($file1, $file2, $fileCsv);

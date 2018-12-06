@@ -14,11 +14,13 @@ include_once('CsvWriter.php');
  * @version  0.1
  * @access   public
  */
-class XlmToCsv
+class CsvFromXML extends CsvWriter
 {
+  /**
+   * cabeceras únicas del fichero csv
+   * @var array
+  */
   private $csvHeaders = [];
-  private $csvFile;
-  private $csv = '';
 
   /**
    * convierte 1 fichero xml en csv
@@ -35,14 +37,14 @@ class XlmToCsv
     if (!$xml = @simplexml_load_string($xmlString))
       throw new Exception('Incorrect xml structure in: ' . $filePath);
 
-    $this->csvFile = new CsvWriter($resultPath);
+    $this->setCsvPath($resultPath);
     
     $this->csvHeaders = $this->getHeader($xml->children());
 
     $this->writeHeader();
     $this->writeBody($xml->children());
 
-    $this->csvFile->save();
+    $this->save();
   }
 
   /**
@@ -72,7 +74,7 @@ class XlmToCsv
    */
   private function writeHeader()
   {
-    $this->csvFile->writeLine(implode(';', $this->csvHeaders));
+    $this->writeCsvLine(implode(';', $this->csvHeaders));
   }
 
   /**
@@ -103,13 +105,15 @@ class XlmToCsv
       //Elimino el último ";" de la línea
       $line = substr($line, 0, strlen($line) - 1);
       
-      $this->csvFile->writeLine($line);
+      $this->writeCsvLine($line);
       
     }
   }
 
 }
 
+$fileXml = getcwd() . '/assets/doc.xml';
+$fileCsv = getcwd() . '/assets/result2.csv';
 
-$xmlToCsv = new XlmToCsv();
-echo $xmlToCsv->convert(getcwd() . '/assets/doc.xml', getcwd() . '/assets/result2.csv');
+$xmlFromXML = new CsvFromXML();
+$xmlFromXML->convert($fileXml, $fileCsv);
