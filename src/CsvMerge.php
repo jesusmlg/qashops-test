@@ -56,7 +56,7 @@ class CsvMerge extends CsvWriter
   /**
    * busca las cabeceras comunes en los dos ficheros y elimina duplicados
    *
-   * @param  array  $filesInArrays contine un array con los ficheros csv mapeados en arrays
+   * @param  array  $filesInArrays contiene un array con los ficheros csv mapeados en arrays
    * @return void    guarda en un array las cabeceras
    * @access private
    */
