@@ -181,4 +181,8 @@ $file2 = __DIR__  . '/../assets/csv2.csv';
 $fileCsv= __DIR__  . '/../assets/result.csv';
 
 $xml = new CsvMerge();
-$xml->merge($file1, $file2, $fileCsv);
+try {
+    $xml->merge($file1, $file2, $fileCsv);
+} catch (Exception $e) {
+    echo $e->getMessage();
+}

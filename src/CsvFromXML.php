@@ -27,6 +27,7 @@ class CsvFromXML extends CsvWriter
      * convierte 1 fichero xml en csv
      *
      * @param  string $filePath ruta del documento xml que vamos a convertir
+     * @param  string $resultPath ruta del fichero csv de destino
      * @return void  genera el archivo csv
      * @access public
      * @throws Exception si no encuentra el archivo o si tiene una estructura xml no válida
@@ -53,11 +54,11 @@ class CsvFromXML extends CsvWriter
   /**
    * Guarda en la propiedad $this->csvHeaders las cabeceras del csv
    *
-   * @param  SimpleXML-Object  array con los items del xml a recorrer
+   * @param  SimpleXMLElement  array con los items del xml a recorrer
    * @return array  retorna un array con las cabeceras únicas que irán en el fichero csv
    * @access private
    */
-  private function getHeader($items)
+  private function getHeader(SimpleXMLElement $items)
   {
     //Recorro todas las claves del array y elimino las duplicadas
     foreach ($items->children() as $item) {
@@ -83,13 +84,12 @@ class CsvFromXML extends CsvWriter
   /**
    * Escribe los atributos del xml en el fichero csv linea a linea
    *
-   * @param  SimpleXML-Object  array con los items del xml a recorrer
+   * @param  SimpleXMLElement  array con los items del xml a recorrer
    * @return void  escribe en el fichero csv
    * @access private
    */
-  private function writeBody($items)
+  private function writeBody(SimpleXMLElement $items)
   {
-    $body = "";
     $firstItem = reset($items);
 
     foreach ($items->children() as $key => $item) {
@@ -119,4 +119,8 @@ $fileXml = __DIR__ . '/../assets/doc.xml';
 $fileCsv = __DIR__ . '/../assets/result2.csv';
 
 $xmlFromXML = new CsvFromXML();
-$xmlFromXML->convert($fileXml, $fileCsv);
+try {
+    $xmlFromXML->convert($fileXml, $fileCsv);
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
