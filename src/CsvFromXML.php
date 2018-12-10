@@ -23,13 +23,14 @@ class CsvFromXML extends CsvWriter
   */
   private $csvHeaders = [];
 
-  /**
-   * convierte 1 fichero xml en csv
-   *
-   * @param  string  $filePath ruta del documento xml que vamos a convertir
-   * @return void  genera el archivo csv
-   * @access public
-   */
+    /**
+     * convierte 1 fichero xml en csv
+     *
+     * @param  string $filePath ruta del documento xml que vamos a convertir
+     * @return void  genera el archivo csv
+     * @access public
+     * @throws Exception si no encuentra el archivo o si tiene una estructura xml no válida
+     */
   public function convert(string $filePath, string $resultPath)
   {
     

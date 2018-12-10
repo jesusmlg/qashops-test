@@ -15,7 +15,7 @@ class CsvWriter
      */
     private $path;
     /**
-     * fichero donde se escribiran los datos
+     * fichero donde se escribirán los datos
      * @var resource
      */
     private $file;
@@ -23,9 +23,10 @@ class CsvWriter
     /**
      * convierte 1 fichero xml en csv
      *
-     * @param  string  $path ruta del fichero que vamos a utilizar
+     * @param  string $path ruta del fichero que vamos a utilizar
      * @return void    abre el fichero en modo escritura
      * @access public
+     * @throws Exception si el directorio no existe
      */
     public function setCsvPath($path)
     {
@@ -38,7 +39,7 @@ class CsvWriter
     /**
      * convierte 1 fichero xml en csv
      *
-     * @param  string  $linea de datos a escribir en el fichero
+     * @param  string  $line de datos a escribir en el fichero
      * @return void    escribe los datos proporcionados en el fichero
      * @access public
      */

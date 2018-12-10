@@ -3,7 +3,7 @@
 include_once('CsvWriter.php');
 
 /**
- * Clase para la convinación de 2 ficheros csv en 1
+ * Clase para la combinación de 2 ficheros csv en 1
  * @package  Prueba Qashops
  * @author   Jesus María Luis Gil <jesusmlg@gmail.com>
  * @version  0.1
@@ -21,15 +21,17 @@ class CsvMerge extends CsvWriter
    * @var array
   */
   private $body = [];
-  /**
-   * combina dos ficheros csv en uno único
-   *
-   * @param  string  $file1Path primer fichero
-   * @param  string  $file2Path segundo fichero
-   * @param  string  $resultPath ruta del fichero donde se guardará el merge
-   * @return void    genera el archivo csv
-   * @access public
-   */
+
+    /**
+     * combina dos ficheros csv en uno único
+     *
+     * @param  string $file1Path primer fichero
+     * @param  string $file2Path segundo fichero
+     * @param  string $resultPath ruta del fichero donde se guardará el merge
+     * @return void    genera el archivo csv
+     * @access public
+     * @throws Exception Si no encuentra alguno de los ficheros
+     */
   public function merge($file1Path, $file2Path, $resultPath)
   {
     if (!file_exists($file1Path) || !file_exists($file2Path))
@@ -44,7 +46,7 @@ class CsvMerge extends CsvWriter
     $this->createBody(array($file1InArray, $file2InArray));
 
 
-    echo $this->writeMergedCsv();
+    $this->writeMergedCsv();
 
     $this->save();
 
@@ -55,7 +57,7 @@ class CsvMerge extends CsvWriter
    * busca las cabeceras comunes en los dos ficheros y elimina duplicados
    *
    * @param  array  $filesInArrays contine un array con los ficheros csv mapeados en arrays
-   * @return void    guarda en un array las cabecerás
+   * @return void    guarda en un array las cabeceras
    * @access private
    */
   private function createHeader(array $filesInArrays)
@@ -100,7 +102,7 @@ class CsvMerge extends CsvWriter
   }
 
   /**
-   * busca el indice de la cabecera cuyo nombre se le pasa por parámetro
+   * busca el índice de la cabecera cuyo nombre se le pasa por parámetro
    *
    * @param  string  $headerName nombre de la cabecera para buscar su índice
    * @return int    devuelve la posición de la cabecera
@@ -161,7 +163,7 @@ class CsvMerge extends CsvWriter
    * la cabecera final
    *
    * @param  array  $csvLine linea con los datos de cada línea del csv
-   * @return void    escribe los datos del body en el fichero csv
+   * @return array  devuelve fila con los los índices sin valor en blanco
    * @access private
    */
   private function fillWithBlanks($csvLine)
