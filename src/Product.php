@@ -18,11 +18,11 @@ class Product
 		{
 			$quantityAvailable = $quantityAvailable - @$ordersQuantity - @$blockedStockQuantity;
 			//apliamos los parametros de seguridad si corresponde
-            if ((!empty($securityStockConfig))) {
-                $quantityAvailable = applySecurity($quantityAvailable, $securityStockConfig);
-            } else {
-                $quantityAvailable = $quantityAvailable;
-            }
+      if ((!empty($securityStockConfig))) {
+        $quantityAvailable = applySecurity($quantityAvailable, $securityStockConfig);
+      } else {
+        $quantityAvailable = $quantityAvailable;
+      }
 
 			$quantityAvailable = ($quantityAvailable > 0) ? $quantityAvailable : 0;
 		}
@@ -79,10 +79,10 @@ class Product
 	public function applySecurity($quantity,$securityStockConfig)
 	{
 		return ShopChannel::applySecurityStockConfig(
-		    $quantity,
-            @$securityStockConfig->mode,
-            @$securityStockConfig->quantity
-        );
+      $quantity,
+      @$securityStockConfig->mode,
+      @$securityStockConfig->quantity
+    );
 	}
 }
 
