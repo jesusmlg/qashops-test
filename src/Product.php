@@ -3,21 +3,20 @@
 class Product
 {
 	public static function stock(
-		$productId,
-		$quantityAvailable,
-		$cache = false,
-		$cacheDuration = 60,
-		$securityStockConfig = null
+	  $productId,
+    $quantityAvailable,
+    $cache = false,
+    $cacheDuration = 60,
+    $securityStockConfig = null
 	) {
+	  $ordersQuantity = getOrdersQuantity($productId, $cache, $cacheDuration);
+	  $blockedStockQuantity = getBlockedStockCache($productId, $cache, $cacheDuration);
+	  //si la cantidad disponible es mayor obtenamos los datos y le restamos los no disponibles
 
-		$ordersQuantity = getOrdersQuantity($productId, $cache, $cacheDuration);
-		$blockedStockQuantity = getBlockedStockCache($productId, $cache, $cacheDuration);
-
-		//si la cantidad disponible es mayor obtenamos los datos y le restamos los no disponibles
-		if($quantityAvailable >= 0)
-		{
-			$quantityAvailable = $quantityAvailable - @$ordersQuantity - @$blockedStockQuantity;
-			//apliamos los parametros de seguridad si corresponde
+    if($quantityAvailable >= 0)
+    {
+      $quantityAvailable = $quantityAvailable - @$ordersQuantity - @$blockedStockQuantity;
+      //apliamos los parametros de seguridad si corresponde
       if ((!empty($securityStockConfig))) {
         $quantityAvailable = applySecurity($quantityAvailable, $securityStockConfig);
       } else {
